@@ -3,6 +3,7 @@ package com.example.gih_project;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -15,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +24,11 @@ import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 public class home_screen extends AppCompatActivity {
     private static final int PermissionRequest = 200;
@@ -34,6 +41,10 @@ public class home_screen extends AppCompatActivity {
     DatabaseReference databaseReference;
      TextView textCartItemCount;
     int mCartItemCount=0;
+    Bundle bundle;
+    String message;
+    String username;
+    TextView name;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,7 +52,13 @@ public class home_screen extends AppCompatActivity {
         setContentView(R.layout.home_screen);
         scanbtn=findViewById(R.id.scan_button);
         addbtn=findViewById(R.id.add_to_cart);
+        name=findViewById(R.id.name);
         databaseReference=FirebaseDatabase.getInstance().getReference("Products");
+        //receiving the string
+        bundle= getIntent().getExtras();
+        message= bundle.getString("message");
+        username=bundle.getString("user_name");
+
         //setting toolbar
         myToolbar = findViewById(R.id.toolbar2);
         setSupportActionBar(myToolbar);
@@ -63,6 +80,21 @@ public class home_screen extends AppCompatActivity {
                 addProduct();
             }
         });
+
+        //generate the barcode
+        ImageView imageView=findViewById(R.id.barcode_id);
+        // Whatever you need to encode in the QR code
+        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+        try {
+            name.setText(username);
+            BitMatrix bitMatrix = multiFormatWriter.encode(message, BarcodeFormat.QR_CODE,200,200);
+            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+            Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+            imageView.setImageBitmap(bitmap);
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void addProduct() {

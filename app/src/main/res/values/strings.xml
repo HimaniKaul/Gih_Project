@@ -18,5 +18,6 @@
     <string name="welcome">Welcome</string>
     <string name="scan">Scan the Product</string>
     <string name="add">Add to Cart</string>
-
+    <string name="cart">Your Cart</string>
+    <string name="label">Your Scanned Products:</string>
 </resources>

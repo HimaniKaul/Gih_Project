@@ -14,32 +14,49 @@
             android:layout_height="wrap_content"
             android:text="@string/app_name"
             android:id="@+id/title_bar"
+            android:layout_gravity="center"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"/>
     </android.support.v7.widget.Toolbar>
     <TextView
-        android:id="@+id/welcome"
+        android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/welcome"
-        android:layout_below="@id/toolbar2"
-        android:textSize="48sp"
+        android:textSize="20sp"
+        android:text="hi"
+        android:layout_below="@+id/toolbar2"
         android:layout_margin="16dp"
-        android:padding="16dp"
         android:layout_centerHorizontal="true" />
-
+    <ImageView
+        android:id="@+id/barcode_id"
+        android:layout_width="240dp"
+        android:layout_height="240dp"
+        android:layout_centerInParent="true"
+        android:layout_margin="8dp"
+        android:background="#000"
+        android:layout_below="@+id/name"/>
+    <TextView
+        android:id="@+id/label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/label"
+        android:layout_margin="8dp"
+        android:layout_below="@+id/barcode_id" />
     <TextView
         android:id="@+id/result"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Result"
         android:layout_margin="16dp"
-        android:layout_below="@+id/welcome" />
+        android:layout_below="@+id/label" />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginTop="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="8dp"
         android:layout_below="@+id/result"
         android:layout_centerHorizontal="true">
         <Button
@@ -53,5 +70,7 @@
             android:layout_height="wrap_content"
             android:text="@string/add" />
     </LinearLayout>
+
+
 
 </RelativeLayout>

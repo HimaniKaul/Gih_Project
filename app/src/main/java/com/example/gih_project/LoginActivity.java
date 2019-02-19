@@ -1,6 +1,7 @@
 package com.example.gih_project;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +28,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private TextView mDetailTextView;
     private FirebaseAuth mAuth;
     public ProgressDialog mProgressDialog;
+    public static String g;
+    public static String m;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,12 +41,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mEmailField = findViewById(R.id.fieldEmail);
         mPasswordField = findViewById(R.id.fieldPassword);
 
-
         findViewById(R.id.emailSignInButton).setOnClickListener(this);
         findViewById(R.id.emailCreateAccountButton).setOnClickListener(this);
         findViewById(R.id.signOutButton).setOnClickListener(this);
         findViewById(R.id.verifyEmailButton).setOnClickListener(this);
-
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -154,9 +155,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void updateUI(FirebaseUser user) {
         hideProgressDialog();
         if (user != null) {
-            mStatusTextView.setText(getString(R.string.emailpassword_status_fmt,
-                    user.getEmail(), user.isEmailVerified()));
-            mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
+            Intent i= new Intent(LoginActivity.this,home_screen.class);
+            m=getString(R.string.emailpassword_status_fmt,
+                    user.getEmail(), user.isEmailVerified());
+            g=getString(R.string.firebase_status_fmt, user.getUid());// generating the unique qr code at the entry
+            i.putExtra("message", g);
+            i.putExtra("user_name", m);
+            startActivity(i);
 
             findViewById(R.id.emailPasswordButtons).setVisibility(View.GONE);
             findViewById(R.id.emailPasswordFields).setVisibility(View.GONE);
