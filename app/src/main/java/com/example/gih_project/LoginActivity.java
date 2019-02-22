@@ -17,6 +17,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -30,12 +32,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public ProgressDialog mProgressDialog;
     public static String g;
     public static String m;
+    DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        databaseReference= FirebaseDatabase.getInstance().getReference();
         mStatusTextView = findViewById(R.id.status);
         mDetailTextView = findViewById(R.id.detail);
         mEmailField = findViewById(R.id.fieldEmail);
@@ -110,6 +113,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         if (task.isSuccessful()) {
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            String id=FirebaseAuth.getInstance().getCurrentUser().getUid();
+                            User usr= new User(id);
+                            databaseReference.child("user").setValue(usr);
                             updateUI(user);
                         } else {
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -200,6 +206,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         return valid;
     }
 
+//    public static String getUid(){
+//        return FirebaseAuth.getInstance().getCurrentUser().getUid();
+//    }
 
     public void showProgressDialog() {
         if (mProgressDialog == null) {

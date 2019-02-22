@@ -14,7 +14,6 @@
             android:layout_height="wrap_content"
             android:text="@string/cart"
             android:id="@+id/title_bar"
-            android:layout_gravity="center"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"/>

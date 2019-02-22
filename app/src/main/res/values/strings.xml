@@ -20,4 +20,5 @@
     <string name="add">Add to Cart</string>
     <string name="cart">Your Cart</string>
     <string name="label">Your Scanned Products:</string>
+    <string name="bill">Your Bill</string>
 </resources>

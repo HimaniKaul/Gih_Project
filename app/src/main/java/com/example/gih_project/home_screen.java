@@ -12,6 +12,7 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,7 +40,7 @@ public class home_screen extends AppCompatActivity {
     private Toolbar myToolbar;
     String products;
     DatabaseReference databaseReference;
-     TextView textCartItemCount;
+    TextView textCartItemCount;
     int mCartItemCount=0;
     Bundle bundle;
     String message;
@@ -99,48 +100,74 @@ public class home_screen extends AppCompatActivity {
 
     public void addProduct() {
         String product_name=result.getText().toString().trim();
-        if(!TextUtils.isEmpty(product_name))
-        {   String id=databaseReference.push().getKey();
-            id_for_firebase i= new id_for_firebase(id, product_name);
-            databaseReference.child(id).setValue(i);
-            Toast.makeText(home_screen.this,"Added To Cart", Toast.LENGTH_SHORT).show();
-            mCartItemCount++;
-            setupBadge();
-        }
-    }
+        try{
+            if(!TextUtils.isEmpty(product_name)) {
+                if (product_name.equals("Cadbury")) {
+                    String id = databaseReference.push().getKey();
+                    id_for_firebase i = new id_for_firebase("gih001", "Cadbury", "10", "https://firebasestorage.googleapis.com/v0/b/gihproject.appspot.com/o/Product%20Details%20for%20Inventory%2Fcadbury.jpg?alt=media&token=46ae15db-0ed6-4e10-95c1-dfb9b025de27");
+                    databaseReference.child(id).setValue(i);
+                    Toast.makeText(home_screen.this, "Added To Cart", Toast.LENGTH_SHORT).show();
+                    mCartItemCount++;
+                    setupBadge();
+                } else if (product_name.equals("Parle G")) {
+                    String id = databaseReference.push().getKey();
+                    id_for_firebase i = new id_for_firebase("gih002", "Parle G Biscuits", "5", "https://firebasestorage.googleapis.com/v0/b/gihproject.appspot.com/o/Product%20Details%20for%20Inventory%2Fparle.jpg?alt=media&token=fbeca348-3436-4f3e-a9a7-0a4b22b280fa");
+                    databaseReference.child(id).setValue(i);
+                    Toast.makeText(home_screen.this, "Added To Cart", Toast.LENGTH_SHORT).show();
+                    mCartItemCount++;
+                    setupBadge();
+                } else if (product_name.equals("Bisleri")) {
+                    String id = databaseReference.push().getKey();
+                    id_for_firebase i = new id_for_firebase("gih004", "Bisleri", "20", "https://firebasestorage.googleapis.com/v0/b/gihproject.appspot.com/o/Product%20Details%20for%20Inventory%2Fparle.jpg?alt=media&token=fbeca348-3436-4f3e-a9a7-0a4b22b280fa");
+                    databaseReference.child(id).setValue(i);
+                    Toast.makeText(home_screen.this, "Added To Cart", Toast.LENGTH_SHORT).show();
+                    mCartItemCount++;
+                    setupBadge();
+                } else if (product_name.equals("Pi")) {
+                    String id = databaseReference.push().getKey();
+                    id_for_firebase i = new id_for_firebase("gih003", "Rasberry Pi", "200", "https://firebasestorage.googleapis.com/v0/b/gihproject.appspot.com/o/Product%20Details%20for%20Inventory%2Fpi.jpg?alt=media&token=c555882c-9265-45f1-b02d-e0bd91099455");
+                    databaseReference.child(id).setValue(i);
+                    Toast.makeText(home_screen.this, "Added To Cart", Toast.LENGTH_SHORT).show();
+                    mCartItemCount++;
+                    setupBadge();
+                }}
+
+        }catch(Exception e){
+            Log.e("error",""+e);} }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode,Intent data) {
         if(requestCode==REQUEST_CODE ){
             if(resultCode== RESULT_OK){
-            if(data!=null)
-            {   final Barcode barcode=data.getParcelableExtra("barcode");
-                 result.post(new Runnable() {
-                     @Override
-                     public void run() {
-                         result.setText(barcode.displayValue);
-                         products=barcode.displayValue;
+                if(data!=null)
+                {   final Barcode barcode=data.getParcelableExtra("barcode");
+                    result.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            result.setText(barcode.displayValue);
+                            products=barcode.displayValue;
 
-                     }
-                 }); }
+                        }
+                    }); }
             }}}
 
-            //setting menu
+    //setting menu
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.basket, menu);
+        final MenuItem menuItem = menu.findItem(R.id.action_cart);
+        View actionView = MenuItemCompat.getActionView(menuItem);
+        textCartItemCount = actionView.findViewById(R.id.cart_badge);
+        actionView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onCreateOptionsMenu(Menu menu) {
-                getMenuInflater().inflate(R.menu.basket, menu);
-                final MenuItem menuItem = menu.findItem(R.id.action_cart);
-                View actionView = MenuItemCompat.getActionView(menuItem);
-                textCartItemCount = actionView.findViewById(R.id.cart_badge);
-                actionView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        onOptionsItemSelected(menuItem);
-                    }
-                });
-
-                return true;
+            public void onClick(View v) {
+                onOptionsItemSelected(menuItem);
             }
+        });
+
+        return true;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
